@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>StimmyType</title>
+  <meta name="description" content="StimmyType: the typing game that drops out of your MacBook's notch. Download for macOS.">
+  <meta name="theme-color" content="#000000">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta property="og:title" content="StimmyType">
+  <meta property="og:description" content="The typing game that drops out of your MacBook's notch.">
+  <meta property="og:image" content="https://stimmytype.org/photo.jpg">
+  <meta property="og:url" content="https://stimmytype.org/">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preload" as="image" href="photo.jpg">
+  <style>
+    :root {
+      color-scheme: dark;
+      --pink: #ff6fb5;
+      --photo-ratio: 1650 / 2200;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      height: 100%;
+      background: #000;
+      overflow: hidden;
+    }
+    body {
+      display: grid;
+      place-items: center;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+    }
+
+    /* Blurred copy of the photo fills the space beside it on wide screens. */
+    .backdrop {
+      position: fixed;
+      inset: -60px;
+      background: url("photo.jpg") center / cover no-repeat;
+      filter: blur(48px) brightness(0.4) saturate(1.3);
+    }
+
+    /* The photo itself: as large as fits, never cropped. */
+    .stage {
+      position: relative;
+      width: min(100vw, calc(100dvh * 1650 / 2200));
+      aspect-ratio: var(--photo-ratio);
+      container-type: inline-size;
+      box-shadow: 0 0 80px rgba(0, 0, 0, 0.6);
+    }
+    .stage img {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* The huge link, pinned over the glass of beer (left side, ~49% down). */
+    .download {
+      position: absolute;
+      left: 2.5%;
+      top: 49%;
+      transform: translateY(-50%) rotate(-4deg);
+      display: block;
+      padding: 0.22em 0.38em 0.26em;
+      font-size: 8.4cqw;
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      text-align: left;
+      text-decoration: none;
+      color: #fff;
+      text-shadow: 0 0.04em 0.18em rgba(0, 0, 0, 0.55), 0 0 0.45em rgba(255, 111, 181, 0.7);
+      border-radius: 0.32em;
+      background: rgba(12, 10, 16, 0.38);
+      -webkit-backdrop-filter: blur(14px) saturate(1.6);
+      backdrop-filter: blur(14px) saturate(1.6);
+      isolation: isolate;
+      transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.3, 1.3), background 0.2s;
+    }
+    /* Siri-style gradient outline. */
+    .download::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      padding: 0.055em;
+      border-radius: inherit;
+      background: conic-gradient(from var(--angle, 0deg), #bc82f3, #f5b9ea, #8d9fff, #ff6778, #ffba71, #c686ff, #bc82f3);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+      filter: drop-shadow(0 0 0.12em rgba(255, 111, 181, 0.8));
+      animation: spin 6s linear infinite;
+      z-index: -1;
+    }
+    .download span { display: block; }
+    .download .arrow {
+      display: inline-block;
+      margin-left: 0.12em;
+      color: var(--pink);
+      transition: transform 0.25s;
+    }
+    .download:hover,
+    .download:focus-visible {
+      transform: translateY(-50%) rotate(-4deg) scale(1.05);
+      background: rgba(12, 10, 16, 0.5);
+    }
+    .download:hover .arrow,
+    .download:focus-visible .arrow { transform: translateY(0.08em); }
+    .download:focus-visible { outline: 0.06em solid #fff; outline-offset: 0.08em; }
+
+    @property --angle {
+      syntax: "<angle>";
+      inherits: false;
+      initial-value: 0deg;
+    }
+    @keyframes spin { to { --angle: 360deg; } }
+    @media (prefers-reduced-motion: reduce) {
+      .download::before { animation: none; }
+      .download { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="backdrop" aria-hidden="true"></div>
+  <main class="stage">
+    <img src="photo.jpg" width="1650" height="2200" alt="Holding up a pint of Guinness and pointing at it">
+    <a class="download" href="StimmyType.dmg" download="StimmyType.dmg"
+       aria-label="Download StimmyType for macOS">
+      <span>Download</span>
+      <span>Here<span class="arrow" aria-hidden="true">↓</span></span>
+    </a>
+  </main>
+</body>
+</html>
